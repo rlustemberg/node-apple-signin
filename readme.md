@@ -1,5 +1,9 @@
 # [Node.js] Sign in with Apple 
 
+## Notice
+This is a fork of https://github.com/Techofficer/node-apple-signin , which seems to be no longer maintained.
+
+
 Node.JS wrapper around [Sign in with Apple REST API](https://developer.apple.com/documentation/signinwithapplerestapi).
 
 This module lets you authenticate users using Apple account in your Node.js application.
