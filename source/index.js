@@ -1,8 +1,8 @@
 const { URL } = require('url');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
+const fs = require('fs');data
 const NodeRSA = require('node-rsa');
-const request = require('request-promise-native');
+const axios = require('axios');
 
 const ENDPOINT_URL = 'https://appleid.apple.com';
 const DEFAULT_SCOPE = 'email';
@@ -68,10 +68,9 @@ const getAuthorizationToken = async (code, options) => {
     redirect_uri: options.redirectUri,
   };
 
-  const body = await request({ url: url.toString(), method: 'POST', form });
-  return JSON.parse(body);
+  const response = await axios({ url: url.toString(), method: 'POST', data: form });
+  return response.data;
 };
-
 const refreshAuthorizationToken = async (refreshToken, options) => {
   if (!options.clientID) throw new Error('clientID is empty');
   if (!options.clientSecret) throw new Error('clientSecret is empty');
@@ -86,17 +85,17 @@ const refreshAuthorizationToken = async (refreshToken, options) => {
     grant_type: 'refresh_token',
   };
 
-  const body = await request({ url: url.toString(), method: 'POST', form });
-  return JSON.parse(body);
+  const response = await axios({ url: url.toString(), method: 'POST', data: form });
+  return response.data;
 };
 
 const getApplePublicKeys = async () => {
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/keys';
 
-  const data = await request({ url: url.toString(), method: 'GET' });
+  const response = await axios({ url: url.toString(), method: 'GET' });
 
-  return (JSON.parse(data).keys || []).map(key => {
+  return (response.data.keys || []).map((key) => {
     const pubKey = new NodeRSA();
     pubKey.importKey({ n: Buffer.from(key.n, 'base64'), e: Buffer.from(key.e, 'base64') }, 'components-public');
     return {pubKey: pubKey.exportKey(['public']), alg: key.alg};
