@@ -1,6 +1,6 @@
 const { URL } = require('url');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');data
+const fs = require('fs');
 const NodeRSA = require('node-rsa');
 const axios = require('axios');
 
